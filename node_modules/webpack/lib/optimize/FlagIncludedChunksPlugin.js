@@ -2,23 +2,37 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-function FlagIncludedChunksPlugin() {}
-module.exports = FlagIncludedChunksPlugin;
+"use strict";
 
-FlagIncludedChunksPlugin.prototype.apply = function(compiler) {
-	compiler.plugin("compilation", function(compilation) {
-		compilation.plugin("optimize-chunk-ids", function(chunks) {
-			chunks.forEach(function(chunkA) {
-				chunks.forEach(function(chunkB) {
-					if(chunkA === chunkB) return;
-					// is chunkB in chunkA?
-					if(chunkA.modules.length < chunkB.modules.length) return;
-					for(var i = 0; i < chunkB.modules.length; i++) {
-						if(chunkA.modules.indexOf(chunkB.modules[i]) < 0) return;
+class FlagIncludedChunksPlugin {
+	apply(compiler) {
+		compiler.hooks.compilation.tap("FlagIncludedChunksPlugin", compilation => {
+			compilation.hooks.optimizeChunkIds.tap(
+				"FlagIncludedChunksPlugin",
+				chunks => {
+					for (const chunkA of chunks) {
+						loopB: for (const chunkB of chunks) {
+							// as we iterate the same iterables twice
+							// skip if we find ourselves
+							if (chunkA === chunkB) continue loopB;
+
+							// instead of swapping A and B just bail
+							// as we loop twice the current A will be B and B then A
+							if (chunkA.getNumberOfModules() < chunkB.getNumberOfModules())
+								continue loopB;
+
+							if (chunkB.getNumberOfModules() === 0) continue loopB;
+
+							// is chunkB in chunkA?
+							for (const m of chunkB.modulesIterable) {
+								if (!chunkA.containsModule(m)) continue loopB;
+							}
+							chunkA.ids.push(chunkB.id);
+						}
 					}
-					chunkA.ids.push(chunkB.id);
-				});
-			});
+				}
+			);
 		});
-	});
-};
+	}
+}
+module.exports = FlagIncludedChunksPlugin;

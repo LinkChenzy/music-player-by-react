@@ -2,60 +2,89 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-var LoaderDependency = require("./LoaderDependency");
+"use strict";
 
-function LoaderPlugin() {}
-module.exports = LoaderPlugin;
+const LoaderDependency = require("./LoaderDependency");
 
-LoaderPlugin.prototype.apply = function(compiler) {
-	compiler.plugin("compilation", function(compilation, params) {
-		var normalModuleFactory = params.normalModuleFactory;
+class LoaderPlugin {
+	apply(compiler) {
+		compiler.hooks.compilation.tap(
+			"LoaderPlugin",
+			(compilation, { normalModuleFactory }) => {
+				compilation.dependencyFactories.set(
+					LoaderDependency,
+					normalModuleFactory
+				);
+			}
+		);
 
-		compilation.dependencyFactories.set(LoaderDependency, normalModuleFactory);
-	});
-	compiler.plugin("compilation", function(compilation) {
-		compilation.plugin("normal-module-loader", function(loaderContext, module) {
-			loaderContext.loadModule = function loadModule(request, callback) {
-				var dep = new LoaderDependency(request);
-				dep.loc = request;
-				compilation.addModuleDependencies(module, [
-					[dep]
-				], true, "lm", false, function(err) {
-					if(err) return callback(err);
+		compiler.hooks.compilation.tap("LoaderPlugin", compilation => {
+			compilation.hooks.normalModuleLoader.tap(
+				"LoaderPlugin",
+				(loaderContext, module) => {
+					loaderContext.loadModule = (request, callback) => {
+						const dep = new LoaderDependency(request);
+						dep.loc = request;
+						const factory = compilation.dependencyFactories.get(
+							dep.constructor
+						);
+						if (factory === undefined)
+							return callback(
+								new Error(
+									`No module factory available for dependency type: ${
+										dep.constructor.name
+									}`
+								)
+							);
+						compilation.addModuleDependencies(
+							module,
+							[
+								{
+									factory,
+									dependencies: [dep]
+								}
+							],
+							true,
+							"lm",
+							false,
+							err => {
+								if (err) return callback(err);
 
-					if(!dep.module) return callback(new Error("Cannot load the module"));
-					if(dep.module.building) dep.module.building.push(next);
-					else next();
+								if (!dep.module)
+									return callback(new Error("Cannot load the module"));
 
-					function next(err) {
-						if(err) return callback(err);
-
-						if(dep.module.error) return callback(dep.module.error);
-						if(!dep.module._source) throw new Error("The module created for a LoaderDependency must have a property _source");
-						var source, map;
-						var moduleSource = dep.module._source;
-						if(moduleSource.sourceAndMap) {
-							var sourceAndMap = moduleSource.sourceAndMap();
-							map = sourceAndMap.map;
-							source = sourceAndMap.source;
-						} else {
-							map = moduleSource.map();
-							source = moduleSource.source();
-						}
-						if(dep.module.fileDependencies) {
-							dep.module.fileDependencies.forEach(function(dep) {
-								loaderContext.addDependency(dep);
-							});
-						}
-						if(dep.module.contextDependencies) {
-							dep.module.contextDependencies.forEach(function(dep) {
-								loaderContext.addContextDependency(dep);
-							});
-						}
-						return callback(null, source, map, dep.module);
-					}
-				});
-			};
+								if (dep.module.error) return callback(dep.module.error);
+								if (!dep.module._source)
+									throw new Error(
+										"The module created for a LoaderDependency must have a property _source"
+									);
+								let source, map;
+								const moduleSource = dep.module._source;
+								if (moduleSource.sourceAndMap) {
+									const sourceAndMap = moduleSource.sourceAndMap();
+									map = sourceAndMap.map;
+									source = sourceAndMap.source;
+								} else {
+									map = moduleSource.map();
+									source = moduleSource.source();
+								}
+								if (dep.module.buildInfo.fileDependencies) {
+									for (const d of dep.module.buildInfo.fileDependencies) {
+										loaderContext.addDependency(d);
+									}
+								}
+								if (dep.module.buildInfo.contextDependencies) {
+									for (const d of dep.module.buildInfo.contextDependencies) {
+										loaderContext.addContextDependency(d);
+									}
+								}
+								return callback(null, source, map, dep.module);
+							}
+						);
+					};
+				}
+			);
 		});
-	});
-};
+	}
+}
+module.exports = LoaderPlugin;

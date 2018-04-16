@@ -2,30 +2,57 @@
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
 */
-var MultiEntryDependency = require("./dependencies/MultiEntryDependency");
-var SingleEntryDependency = require("./dependencies/SingleEntryDependency");
-var MultiModuleFactory = require("./MultiModuleFactory");
+"use strict";
 
-function MultiEntryPlugin(context, entries, name) {
-	this.context = context;
-	this.entries = entries;
-	this.name = name;
-}
-module.exports = MultiEntryPlugin;
-MultiEntryPlugin.prototype.apply = function(compiler) {
-	compiler.plugin("compilation", function(compilation, params) {
-		var multiModuleFactory = new MultiModuleFactory();
-		var normalModuleFactory = params.normalModuleFactory;
+const MultiEntryDependency = require("./dependencies/MultiEntryDependency");
+const SingleEntryDependency = require("./dependencies/SingleEntryDependency");
+const MultiModuleFactory = require("./MultiModuleFactory");
 
-		compilation.dependencyFactories.set(MultiEntryDependency, multiModuleFactory);
+module.exports = class MultiEntryPlugin {
+	constructor(context, entries, name) {
+		this.context = context;
+		this.entries = entries;
+		this.name = name;
+	}
 
-		compilation.dependencyFactories.set(SingleEntryDependency, normalModuleFactory);
-	});
-	compiler.plugin("make", function(compilation, callback) {
-		compilation.addEntry(this.context, new MultiEntryDependency(this.entries.map(function(e, idx) {
-			var dep = new SingleEntryDependency(e);
-			dep.loc = this.name + ":" + (100000 + idx);
-			return dep;
-		}, this), this.name), this.name, callback);
-	}.bind(this));
+	apply(compiler) {
+		compiler.hooks.compilation.tap(
+			"MultiEntryPlugin",
+			(compilation, { normalModuleFactory }) => {
+				const multiModuleFactory = new MultiModuleFactory();
+
+				compilation.dependencyFactories.set(
+					MultiEntryDependency,
+					multiModuleFactory
+				);
+				compilation.dependencyFactories.set(
+					SingleEntryDependency,
+					normalModuleFactory
+				);
+			}
+		);
+
+		compiler.hooks.make.tapAsync(
+			"MultiEntryPlugin",
+			(compilation, callback) => {
+				const { context, entries, name } = this;
+
+				const dep = MultiEntryPlugin.createDependency(entries, name);
+				compilation.addEntry(context, dep, name, callback);
+			}
+		);
+	}
+
+	static createDependency(entries, name) {
+		return new MultiEntryDependency(
+			entries.map((e, idx) => {
+				const dep = new SingleEntryDependency(e);
+				// Because entrypoints are not dependencies found in an
+				// existing module, we give it a synthetic id
+				dep.loc = `${name}:${100000 + idx}`;
+				return dep;
+			}),
+			name
+		);
+	}
 };
