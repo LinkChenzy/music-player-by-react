@@ -1,6 +1,9 @@
 
 import React from 'react'
-import './index.less'
+import {render} from 'react-dom';
+import Hello from './component/hello.js'
 
-console.log(5);
-console.log('this is my first webpack-project');
+React.render(
+	<Hello></Hello>,
+	document.getElementById("app")
+);
