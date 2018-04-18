@@ -3,9 +3,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    mode:'development',
 	devtool: 'eval-source-map',
     entry: [
-
+        'webpack-dev-server/client?http://localhost:3000',
+        'webpack/hot/only-dev-server',
+        'react-hot-loader/patch',
         path.join(__dirname, 'app/index.js')
     ],
     output: {
