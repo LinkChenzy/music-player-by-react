@@ -5,9 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
 	devtool: 'eval-source-map',
     entry: [
-        'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server',
-        'react-hot-loader/patch',
+
         path.join(__dirname, 'app/index.js')
     ],
     output: {
@@ -30,11 +28,13 @@ module.exports = {
 	module: {
 	     rules: [
 	     	{
-                test: /\.js$/,
+                test: /\.jsx$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
-
+                    options: {
+                      presets:['react','es2015']
+                    }
                 }
             },
             {
