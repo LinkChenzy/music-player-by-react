@@ -1,33 +1,29 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     mode:'development',
-	devtool: 'eval-source-map',
-    entry: [
-        'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server',
-        'react-hot-loader/patch',
-        path.join(__dirname, 'app/index.js')
-    ],
-    output: {
-        path: path.join(__dirname, '/dist/'),
-        filename: '[name].js',
-        publicPath: '/'
+    entry: {
+        app: './src/index.js',
+        print: './src/print.js'
+    },
+    devtool: 'inline-source-map',
+    devServer: {
+        contentBase: './dist'
     },
     plugins: [
+        new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
-          template: './app/index.tpl.html',
-          inject: 'body',
-          filename: './index.html'
-        }),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.DefinePlugin({
-          'process.env.NODE_ENV': JSON.stringify('development')
+            title: 'Output Management'
         })
     ],
+    output: {
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: '/'     //publicPath 也会在服务器脚本用到，以确保文件资源能够在 http://localhost:3000 下正确访问，我们稍后再设置端口号
+    },
 	module: {
 	     rules: [
 	     	{
@@ -59,10 +55,5 @@ module.exports = {
 	        },
 	     ]
 	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			title: 'use plugin',
-			filename: 'index.html'
-		})
-	]
+
 };
