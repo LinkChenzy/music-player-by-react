@@ -2,22 +2,26 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');//精简输出
 
 module.exports = {
     mode:'development',
     entry: {
         app: './src/index.js',
-        print: './src/print.js'
     },
-    devtool: 'inline-source-map',
+    devtool: 'inline-source-map',  //提供了 source map 功能，将编译后的代码映射回原始源代码 我们使用 inline-source-map 选项，这有助于解释说明我们的目的（仅解释说明，不要用于生产环境）
     devServer: {
-        contentBase: './dist'
+        contentBase: './dist',  //配置告知 webpack-dev-server，在 localhost:8080 下建立服务，将 dist 目录下的文件，作为可访问文件。
+        hot: true
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             title: 'Output Management'
-        })
+        }),
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new UglifyJSPlugin()
     ],
     output: {
         filename: '[name].bundle.js',
