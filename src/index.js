@@ -3,13 +3,19 @@ import {
 	render
 } from 'react-dom'
 import ReactDOM from 'react-dom'
-// import {
-// 	element
-// } from './root.js'
-
-const element = <h1>Hello, world</h1>;
+import  Root from './root.js'
 
 ReactDOM.render(
-	element,
+        <Root />,
 	document.getElementById('app')
 );
+
+if (module.hot) {
+    module.hot.accept('./root', () => {
+        const NewRoot = require('./root').default;
+        render(
+                <NewRoot />,
+            document.getElementById('app')
+        );
+    });
+}
