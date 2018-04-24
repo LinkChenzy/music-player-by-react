@@ -1,0 +1,350 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, p, blockquote, th, td { margin:0; padding:0; }
+body { font-size:12px; color:#666; font-family: Microsoft YaHei,SimSun;background: #f6f6f6;line-height: 2;}
+fieldset, img { border:0; }
+ol, ul { list-style:none; }
+h1, h2, h3, h4, h5, h6{ font-size:100%; }
+em { font-style:normal; }
+input, button, select, textarea { outline:none; }
+textarea { resize:none; } //禁用了文本的拖拉，尤其在谷歌下
+p{ text-align:justify; text-justify:distribute;text-indent:2em;} //为了使文本段落左右两边对齐
+p{word-wrap:break-word}
+a {text-decoration:none; }
+i{display: inline-block;}
+span{display: inline-block;}
+/*a:hover { color: #f60; text-decoration:none; }*/
+address,cite,code,em,th {font-weight:normal; font-style:normal;}
+a{color:inherit;text-decoration:none;display: inline-block;}
+/*a:link{color:#009;}*/
+/*a:visited{color:#800080;}*/
+a:hover,a:active,a:focus{text-decoration:underline;}
+table { border-collapse:collapse; border-spacing:0; }
+/*应该把自己喜欢的下拉框，表格，之类*/
+/*一些自己平时喜欢使用的式样*/
+.fl{float: left!important;}
+.fr{float: right!important;}
+/*1,2,3,5,8,10,15,20,30,50,70,100*/
+.ml1{margin-left: 1px}.ml2{margin-left: 2px}.ml3{margin-left: 3px}.ml5{margin-left: 5px}.m8{margin-left: 8px}.ml10{margin-left: 10px}.ml15{margin-left: 15px}.ml20{margin-left: 20px}.ml30{margin-left: 30px}.ml50{margin-left: 50px}.ml70{margin-left: 70px}.ml100{margin-left: 100px}
+.mr1{margin-right: 1px}.mr2{margin-right: 2px}.mr3{margin-right: 3px}.mr5{margin-right: 5px}.m8{margin-right: 8px}.mr10{margin-right: 10px}.mr15{margin-right: 15px}.mr20{margin-right: 20px}.mr30{margin-right: 30px}.mr50{margin-right: 50px}.mr70{margin-right: 70px}.mr100{margin-right: 100px}
+.mtf1{margin-top: -1px}.mtf2{margin-top: -2px}.mtf3{margin-top: -3px}.mtf5{margin-top: -5px}.mtf7{margin-top: -7px}.mtf10{margin-top: -10px}
+.mt1{margin-top: 1px}.mt2{margin-top: 2px}.mt3{margin-top: 3px}.mt5{margin-top: 5px}.m8{margin-top: 8px}.mt10{margin-top: 10px}.mt15{margin-top: 15px}.mt20{margin-top: 20px}.mt30{margin-top: 30px}.mt50{margin-top: 50px}.mt70{margin-top: 70px}.mt100{margin-top: 100px}
+.mb1{margin-bottom: 1px!important;}.mb2{margin-bottom: 2px!important;}.mb3{margin-bottom: 3px!important;}.mb5{margin-bottom: 5px!important;}.m8{margin-bottom: 8px!important;}.mb10{margin-bottom: 10px!important;}.mb15{margin-bottom: 15px!important;}.mb20{margin-bottom: 20px!important;}.mb30{margin-bottom: 30px!important;}.mb50{margin-bottom: 50px!important;}.mb70{margin-bottom: 70px!important;}.mb100{margin-bottom: 100px!important;}
+.h1{height: 1px!important;}.h2{height: 2px!important;}.h3{height: 3px!important;}.h5{height: 5px!important;}.h8{height: 8px!important;}.h10{height: 10px!important;}.h15{height: 15px!important;}.h20{height: 20px!important;}.h30{height: 30px!important;}.h50{height: 50px!important;}.h70{height: 70px!important;}.h100{height: 100px!important;}
+.w1{width: 1px}.w2{width: 2px}.w3{width: 3px}.w5{width: 5px}.m8{width: 8px}.w10{width: 10px}.w15{width: 15px}.w20{width: 20px}.w30{width: 30px}.w50{width: 50px}.w70{width: 70px}.w100{width: 100px}
+/*这个属性的时候必须和h1或者其他的h结果*/
+.wp3{width: 3%;}.wp5{width: 5%;}.wp7{width: 7%;}.wp10{width: 10%;}.wp15{width: 15%;}.wp20{width: 20%;}.wp25{width: 25%;}.wp30{width: 30%;}.wp40{width: 40%;}.wp50{width: 50%;}.wp60{width: 60%;}.wp100{width: 100%;}
+.f12{font-size: 12px;}.f13{font-size: 13px;}.f14{font-size: 14px;}.f15{font-size: 15px;}.f16{font-size: 16px;}.f17{font-size: 17px;}.f18{font-size: 18px;}.f20{font-size: 20px;}
+.row{width:100%;}
+.test{border: 1px solid red;}
+.mauto{margin:0 auto;}
+.inlineblock{display: inline-block;}
+.clearfix{clear: both;}
+.block{display: block;}
+/*对于行内样式这个时候就不能show和hide了，这个必须使用removeClass('none')*/
+.none{display: none!important;}
+/*absolute relative*/
+.absolute{position: absolute;}
+.relative{position:relative;}
+div{
+  /*text-align: center;*/
+  /*vertical-align: middle;*/
+}
+/*normalize.css 一些东西添加进来*/
+html {
+  -ms-text-size-adjust: 100%; /* 3 */
+  -webkit-text-size-adjust: 100%; /* 3 */
+}
+/**
+ * Add the correct display in IE 9-.
+ */
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+/**
+ * Correct the font size and margin on `h1` elements within `section` and
+ * `article` contexts in Chrome, Firefox, and Safari.
+ */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+/**
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in IE.
+ */
+figcaption,
+figure,
+main { /* 1 */
+  display: block;
+}
+/**
+ * Add the correct margin in IE 8.
+ */
+figure {
+  margin: 1em 40px;
+}
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+hr {
+  box-sizing: content-box; /* 1 */
+  height: 0; /* 1 */
+  overflow: visible; /* 2 */
+}
+/**
+ * 1. Correct the inheritance and scaling of font size in all browsers.
+ * 2. Correct the odd `em` font sizing in all browsers.
+ */
+pre {
+  font-family: monospace, monospace; /* 1 */
+  font-size: 1em; /* 2 */
+}
+/* Text-level semantics
+   ========================================================================== */
+/**
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+a {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}
+/**
+ * Remove the outline on focused links when they are also active or hovered
+ * in all browsers (opinionated).
+ */
+a:active,
+a:hover {
+  outline-width: 0;
+}
+/**
+ * 1. Remove the bottom border in Firefox 39-.
+ * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+ */
+abbr[title] {
+  border-bottom: none; /* 1 */
+  text-decoration: underline; /* 2 */
+  text-decoration: underline dotted; /* 2 */
+}
+/**
+ * Prevent the duplicate application of `bolder` by the next rule in Safari 6.
+ */
+b,
+strong {
+  font-weight: inherit;
+}
+/**
+ * Add the correct font weight in Chrome, Edge, and Safari.
+ */
+b,
+strong {
+  font-weight: bolder;
+}
+/* Embedded content
+   ========================================================================== */
+/**
+ * Add the correct display in IE 9-.
+ */
+audio,
+video {
+  display: inline-block;
+}
+/**
+ * Add the correct display in iOS 4-7.
+ */
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+/**
+ * Remove the border on images inside links in IE 10-.
+ */
+img {
+  border-style: none;
+}
+/**
+ * Hide the overflow in IE.
+ */
+svg:not(:root) {
+  overflow: hidden;
+}
+/* Forms
+   ========================================================================== */
+/**
+ * 1. Change the font styles in all browsers (opinionated).
+ * 2. Remove the margin in Firefox and Safari.
+ */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: sans-serif; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
+}
+/**
+ * Show the overflow in IE.
+ * 1. Show the overflow in Edge.
+ */
+button,
+input { /* 1 */
+  overflow: visible;
+}
+/**
+ * Remove the inheritance of text transform in Edge, Firefox, and IE.
+ * 1. Remove the inheritance of text transform in Firefox.
+ */
+button,
+select { /* 1 */
+  text-transform: none;
+}
+/**
+ * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
+ *    controls in Android 4.
+ * 2. Correct the inability to style clickable types in iOS and Safari.
+ */
+button,
+html [type="button"], /* 1 */
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button; /* 2 */
+}
+/**
+ * Remove the inner border and padding in Firefox.
+ */
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+/**
+ * Restore the focus styles unset by the previous rule.
+ */
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+/**
+ * Change the border, margin, and padding in all browsers (opinionated).
+ */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+/**
+ * 1. Correct the text wrapping in Edge and IE.
+ * 2. Correct the color inheritance from `fieldset` elements in IE.
+ * 3. Remove the padding so developers are not caught out when they zero out
+ *    `fieldset` elements in all browsers.
+ */
+legend {
+  box-sizing: border-box; /* 1 */
+  color: inherit; /* 2 */
+  display: table; /* 1 */
+  max-width: 100%; /* 1 */
+  padding: 0; /* 3 */
+  white-space: normal; /* 1 */
+}
+/**
+ * 1. Add the correct display in IE 9-.
+ * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.
+ */
+progress {
+  display: inline-block; /* 1 */
+  vertical-align: baseline; /* 2 */
+}
+/**
+ * Remove the default vertical scrollbar in IE.
+ */
+textarea {
+  overflow: auto;
+}
+/**
+ * 1. Add the correct box sizing in IE 10-.
+ * 2. Remove the padding in IE 10-.
+ */
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box; /* 1 */
+  padding: 0; /* 2 */
+}
+/**
+ * Correct the cursor style of increment and decrement buttons in Chrome.
+ */
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+/**
+ * 1. Correct the odd appearance in Chrome and Safari.
+ * 2. Correct the outline style in Safari.
+ */
+[type="search"] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+/**
+ * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.
+ */
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+/**
+ * 1. Correct the inability to style clickable types in iOS and Safari.
+ * 2. Change font properties to `inherit` in Safari.
+ */
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+/* Interactive
+   ========================================================================== */
+/*
+ * Add the correct display in IE 9-.
+ * 1. Add the correct display in Edge, IE, and Firefox.
+ */
+details, /* 1 */
+menu {
+  display: block;
+}
+/*
+ * Add the correct display in all browsers.
+ */
+summary {
+  display: list-item;
+}
+/* Scripting
+   ========================================================================== */
+/**
+ * Add the correct display in IE 9-.
+ */
+canvas {
+  display: inline-block;
+}
+/**
+ * Add the correct display in IE.
+ */
+template {
+  display: none;
+}
+/* Hidden
+   ========================================================================== */
+/**
+ * Add the correct display in IE 10-.
+ */
+[hidden] {
+  display: none;
+}
