@@ -10,7 +10,7 @@ import '../static/css/common.css'
 import '../static/css/reset.css'
 
 
-ReactDOM.render(
+render(
 	<AppContainer>
         <Root />
     </AppContainer>,
