@@ -34,6 +34,31 @@ table { border-collapse:collapse; border-spacing:0; }
 .wp3{width: 3%;}.wp5{width: 5%;}.wp7{width: 7%;}.wp10{width: 10%;}.wp15{width: 15%;}.wp20{width: 20%;}.wp25{width: 25%;}.wp30{width: 30%;}.wp40{width: 40%;}.wp50{width: 50%;}.wp60{width: 60%;}.wp100{width: 100%;}
 .f12{font-size: 12px;}.f13{font-size: 13px;}.f14{font-size: 14px;}.f15{font-size: 15px;}.f16{font-size: 16px;}.f17{font-size: 17px;}.f18{font-size: 18px;}.f20{font-size: 20px;}
 .row{width:100%;}
+.row
+{
+    display: -webkit-box!important;
+    display: -webkit-flex!important;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    width: 100%;
+}
+.-align-top.btn-group,.-align-top.flex-row,.row.-align-top
+{
+    -webkit-align-items: flex-start;
+    -webkit-box-align: start;
+}
+.row>*
+{
+    display: block!important;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+}
+.row>.-col-auto
+{
+    display: block!important;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+}
 .test{border: 1px solid red;}
 .mauto{margin:0 auto;}
 .inlineblock{display: inline-block;}

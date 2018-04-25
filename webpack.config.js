@@ -25,7 +25,8 @@ module.exports = {
         }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new UglifyJSPlugin()
+        new UglifyJSPlugin(),
+
     ],
     output: {
         filename: '[name].bundle.js',
@@ -64,7 +65,7 @@ module.exports = {
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
-                'url-loader'
+                'file-loader'
                 ]
             },
             {
