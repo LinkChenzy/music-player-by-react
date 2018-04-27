@@ -1,14 +1,14 @@
 import React from 'react'
 import Header from './components/Header/header.js'
-import Progress from './components/Progress/progress.js'
+import Player from './page/player.js'
 
-let duration = null;
+
 export default class Root extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			progress: "-"
+
 		};
 	}
 	componentDidMount() {
@@ -21,29 +21,13 @@ export default class Root extends React.Component {
 			supplied: 'mp3',
 			wmode: 'window'
 		});
-		$('#player').bind($.jPlayer.event.timeupdate, (e) => {
-			duration = e.jPlayer.status.duration;
-			this.setState({
-				//progress:Math.round(e.jPlayer.status.currentTime)//jPlayer获取的当前的时间
-				progress: e.jPlayer.status.currentPercentAbsolute
-			});
-		});
 
-	}
-	componentWillUnmount() {
-		$('#player').unbind($.jPlayer.event.timeupdate);
-	}
-	changeProgressHandle(progress) {
-		$('#player').jPlayer('play', duration * progress);
 	}
 	render() {
 		return (
 			<div>
     			<Header />
-    			<Progress 
-    				progress={this.state.progress}
-    				onProgressChange = {this.changeProgressHandle}
-    			></Progress>
+    			<Player></Player>
     		</div>
 		)
 	}
