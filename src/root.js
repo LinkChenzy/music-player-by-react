@@ -1,14 +1,15 @@
 import React from 'react'
 import Header from './components/Header/header.js'
 import Player from './page/player.js'
+import MUSIC_LIST from './config/musiclist.js'
 
-
+console.log(MUSIC_LIST);
 export default class Root extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-
+			currentMusicItem:MUSIC_LIST[1]
 		};
 	}
 	componentDidMount() {
@@ -21,13 +22,18 @@ export default class Root extends React.Component {
 			supplied: 'mp3',
 			wmode: 'window'
 		});
+		
 
 	}
+	componentWillUnmount() {
+		
+	}
+	
 	render() {
 		return (
 			<div>
     			<Header />
-    			<Player></Player>
+    			<Player currentMusicItem={currentMusicItem}></Player>
     		</div>
 		)
 	}
