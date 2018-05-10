@@ -17,7 +17,7 @@ export default class Progress extends React.Component {
 				onClick={this.onChangeProgress} ref='progressBar'
 			>
 				<div className='progress' style={{width:`${this.props.progress}%`}}>
-				{this.props.progress}s</div>
+				</div>
 			</div>
 		);
 	}

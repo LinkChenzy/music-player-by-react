@@ -1,15 +1,15 @@
 import React from 'react'
 import Header from './components/Header/header.js'
 import Player from './page/player.js'
-import MUSIC_LIST from './config/musiclist.js'
+import {MUSIC_LIST} from './config/musiclist.js'
 
-console.log(MUSIC_LIST);
+
 export default class Root extends React.Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentMusicItem:MUSIC_LIST[1]
+			currentMusicItem:MUSIC_LIST[0]
 		};
 	}
 	componentDidMount() {
@@ -33,7 +33,7 @@ export default class Root extends React.Component {
 		return (
 			<div>
     			<Header />
-    			<Player currentMusicItem={currentMusicItem}></Player>
+    			<Player currentMusicItem={this.state.currentMusicItem}></Player>
     		</div>
 		)
 	}

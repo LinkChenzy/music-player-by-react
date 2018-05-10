@@ -9,7 +9,7 @@
 
 
 ### 清理 /dist 文件夹
-安装:npm install clean-webpack-plugin --save-dev
+安装:npm install clean-webpack-plugin --save-dev<br>
 配置：webpack.config.js
 	  const CleanWebpackPlugin = require('clean-webpack-plugin');
 	  
@@ -18,7 +18,7 @@
 	  ]
 
 ### 精简输出(依赖第三方的工具执行未引用的代码的dead-code删除工作)
-安装：npm install --save-dev uglifyjs-webpack-plugin
+安装：npm install --save-dev uglifyjs-webpack-plugin<br>
 配置：webpack.config.js
 	  const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
@@ -37,5 +37,5 @@
  ### 启动开发服务<br>
  npm start
 
- #编译代码<br>
+ ### 编译代码<br>
  npm run build

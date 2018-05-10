@@ -44,7 +44,10 @@ export default class Player extends React.Component {
                 			</div>
                 		</div>
                 		<div style={{height: 10, lineHeight: '10px'}}>
-			                播放进度
+			                <Progress 
+			                	progress={this.state.progress}>
+			                	onChangeProgress={this.changeProgressHandle}
+			                </Progress>
                 		</div>
                 		<div className="mt35 row">
                 			<div>
