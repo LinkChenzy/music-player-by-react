@@ -7,14 +7,16 @@ export default class Player extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			progress: "-"
+			progress: 0,
+			volume: 0,
 		};
 	}
-	componentDidMount(){
+	componentDidMount() {
 		$('#player').bind($.jPlayer.event.timeupdate, (e) => {
 			duration = e.jPlayer.status.duration;
 			this.setState({
 				//progress:Math.round(e.jPlayer.status.currentTime)//jPlayer获取的当前的时间
+				volume: e.jPlayer.options.volume * 100,
 				progress: e.jPlayer.status.currentPercentAbsolute
 			});
 		});
@@ -24,11 +26,15 @@ export default class Player extends React.Component {
 	}
 	changeProgressHandle(progress) {
 		$('#player').jPlayer('play', duration * progress);
+
+	}
+	changeVolumeHandle(progress) {
+		$('#player').jPlayer('volume', progress);
 	}
 	render() {
 		return (
 
-    		<div className="player-page">
+			<div className="player-page">
                 <h1 className="caption">我的私人音乐坊 &gt;</h1>
                 <div className="mt20 row">
                 	<div className="controll-wrapper">
@@ -39,14 +45,13 @@ export default class Player extends React.Component {
                 			<div className="volume-container">
                 				<i className="icon-volume rt" style={{top: 5, left: -5}}></i>
                 				<div className="volume-wrapper">
-					                音量控制部分
+					                <Progress progress={this.state.volume} onProgressChange={this.changeVolumeHandle}>
+					                </Progress>
                 				</div>
                 			</div>
                 		</div>
                 		<div style={{height: 10, lineHeight: '10px'}}>
-			                <Progress 
-			                	progress={this.state.progress}>
-			                	onChangeProgress={this.changeProgressHandle}
+			                <Progress  progress={this.state.progress} onProgressChange={this.changeProgressHandle}>
 			                </Progress>
                 		</div>
                 		<div className="mt35 row">
