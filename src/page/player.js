@@ -9,6 +9,7 @@ export default class Player extends React.Component {
 		this.state = {
 			progress: 0,
 			volume: 0,
+			isPlay: true
 		};
 	}
 	componentDidMount() {
@@ -17,7 +18,8 @@ export default class Player extends React.Component {
 			this.setState({
 				//progress:Math.round(e.jPlayer.status.currentTime)//jPlayer获取的当前的时间
 				volume: e.jPlayer.options.volume * 100,
-				progress: e.jPlayer.status.currentPercentAbsolute
+				progress: e.jPlayer.status.currentPercentAbsolute,
+				isPlay: true
 			});
 		});
 	}
@@ -26,10 +28,20 @@ export default class Player extends React.Component {
 	}
 	changeProgressHandle(progress) {
 		$('#player').jPlayer('play', duration * progress);
-
 	}
 	changeVolumeHandle(progress) {
 		$('#player').jPlayer('volume', progress);
+	}
+	play(isPlay){
+		if(isPlay){
+			$('#player').jPlayer('pause');
+		}else{
+			$('#player').jPlayer('play');
+		}
+		// console.log(isPlay);
+		this.setState({
+			isPlay:!this.state.isPlay
+		});
 	}
 	render() {
 		return (
@@ -57,7 +69,7 @@ export default class Player extends React.Component {
                 		<div className="mt35 row">
                 			<div>
 	                			<i className="icon prev"></i>
-	                			<i className="icon ml20 play"></i>
+	                			<i className={`icon ml20 ${this.state.isPlay ? 'play' : 'pause'}`} onClick={this.play}></i>
 	                			<i className="icon next ml20"></i>
                 			</div>
                 			<div className="-col-auto">
