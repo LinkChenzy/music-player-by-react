@@ -11,6 +11,8 @@ export default class Player extends React.Component {
 			volume: 0,
 			isPlay: true
 		};
+		this.playMusic = this.playMusic.bind(this);
+		this.changeProgressHandle = this.changeProgressHandle.bind(this);
 	}
 	componentDidMount() {
 		$('#player').bind($.jPlayer.event.timeupdate, (e) => {
@@ -19,33 +21,33 @@ export default class Player extends React.Component {
 				//progress:Math.round(e.jPlayer.status.currentTime)//jPlayer获取的当前的时间
 				volume: e.jPlayer.options.volume * 100,
 				progress: e.jPlayer.status.currentPercentAbsolute,
-				isPlay: true
 			});
+
 		});
 	}
 	componentWillUnmount() {
 		$('#player').unbind($.jPlayer.event.timeupdate);
 	}
 	changeProgressHandle(progress) {
-		$('#player').jPlayer('play', duration * progress);
+		$('#player').jPlayer(this.state.isPlay?'play':'pause', duration * progress);
 	}
 	changeVolumeHandle(progress) {
 		$('#player').jPlayer('volume', progress);
 	}
-	play(isPlay){
-		if(isPlay){
+
+	playMusic(){
+		if(this.state.isPlay){
 			$('#player').jPlayer('pause');
 		}else{
 			$('#player').jPlayer('play');
 		}
-		// console.log(isPlay);
 		this.setState({
 			isPlay:!this.state.isPlay
-		});
+		})
+		
 	}
 	render() {
 		return (
-
 			<div className="player-page">
                 <h1 className="caption">我的私人音乐坊 &gt;</h1>
                 <div className="mt20 row">
@@ -69,7 +71,8 @@ export default class Player extends React.Component {
                 		<div className="mt35 row">
                 			<div>
 	                			<i className="icon prev"></i>
-	                			<i className={`icon ml20 ${this.state.isPlay ? 'play' : 'pause'}`} onClick={this.play}></i>
+	                			
+	                			<i className={`icon ml20 ${this.state.isPlay ? 'pause':'play'}`} onClick={this.playMusic}></i>
 	                			<i className="icon next ml20"></i>
                 			</div>
                 			<div className="-col-auto">

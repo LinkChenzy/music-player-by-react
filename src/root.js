@@ -2,6 +2,7 @@ import React from 'react'
 import Header from './components/Header/header.js'
 import Player from './page/player.js'
 import {MUSIC_LIST} from './config/musiclist.js'
+import MusicList from './page/musiclist.js'
 
 
 export default class Root extends React.Component {
@@ -9,6 +10,7 @@ export default class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			musicList:MUSIC_LIST,
 			currentMusicItem:MUSIC_LIST[0]
 		};
 	}
@@ -33,7 +35,10 @@ export default class Root extends React.Component {
 		return (
 			<div>
     			<Header />
-    			<Player currentMusicItem={this.state.currentMusicItem}></Player>
+    			<MusicList currentMusicItem={this.state.currentMusicItem}
+    			musicList={this.state.musicList}
+    			>
+    			</MusicList>
     		</div>
 		)
 	}
