@@ -1,10 +1,10 @@
 import React from 'react'
-import MusicListItem from '../components/nusiclistitem/musiclistitem.js'
+import MusicListItem from '../components/musiclistitem/musiclistitem.js'
 
 export default class MusicList extends React.Component {
-	render(){
+	render() {
 		let listEle = null;
-		listEle = this.props.musicList.map((item)=>{
+		listEle = this.props.musicList.map((item) => {
 			return <MusicListItem 
 						musicItem={item} 
 						key={item.id}
@@ -13,7 +13,7 @@ export default class MusicList extends React.Component {
 					{item.title}
 					</MusicListItem>
 		});
-		return(
+		return (
 			<ul>
 				{ listEle }
 			</ul>

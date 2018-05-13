@@ -11,19 +11,9 @@ import {
 	Route,
 	Switch
 } from 'react-router-dom'
+import Pubsub from 'pubsub-js'
 
 
-class App extends React.Component {
-
-	render() {
-		return (
-			<div>
-    			<Header />
-    			
-    		</div>
-		)
-	}
-}
 class Root extends React.Component {
 	constructor(props) {
 		super(props);
@@ -32,20 +22,39 @@ class Root extends React.Component {
 			currentMusicItem: MUSIC_LIST[0]
 		};
 	}
+	playMusic(musicItem) {
+		$("#player").jPlayer('setMedia', {
+			mp3: musicItem.file
+		}).jPlayer('play');
+		this.setState({
+			currentMusicItem: musicItem
+		});
+	}
 	componentDidMount() {
 		$("#player").jPlayer({
-			ready: function() {
-				$(this).jPlayer('setMedia', {
-					mp3: 'http://oj4t8z2d5.bkt.clouddn.com/%E9%AD%94%E9%AC%BC%E4%B8%AD%E7%9A%84%E5%A4%A9%E4%BD%BF.mp3'
-				}).jPlayer('play');
-			},
 			supplied: 'mp3',
 			wmode: 'window'
+		});
+		this.playMusic(this.state.currentMusicItem);
+		// 删除音乐列表
+		Pubsub.subscribe('DELETE_MUSIC', (message, musicItem) => {
+			this.setState({
+				// 过滤音乐列表
+				musicList: this.state.musicList.filter(item => {
+					return item !== musicItem;
+				})
+			});
+		});
+
+		// 点击音乐播放
+		Pubsub.subscribe('PLAY_MUSIC', (message, musicItem) => {
+
 		});
 
 	}
 	componentWillUnmount() {
-
+		Pubsub.unsubscribe('DELETE_MUSIC');
+		Pubsub.unsubscribe('PLAY_MUSIC');
 	}
 
 	render() {
