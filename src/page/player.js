@@ -4,6 +4,7 @@ import './player.less'
 import {
 	Link
 } from 'react-router-dom'
+import Pubsub from 'pubsub-js'
 
 let duration = null;
 export default class Player extends React.Component {
@@ -49,6 +50,12 @@ export default class Player extends React.Component {
 		})
 
 	}
+	playPrev() {
+		Pubsub.publish('PLAY_PREV');
+	}
+	playNext() {
+		Pubsub.publish('PLAY_NEXT');
+	}
 	render() {
 		return (
 			<div className="player-page">
@@ -73,10 +80,10 @@ export default class Player extends React.Component {
                 		</div>
                 		<div className="mt35 row">
                 			<div>
-	                			<i className="icon prev"></i>
+	                			<i className="icon prev" onClick={this.playPrev}></i>
 	                			
 	                			<i className={`icon ml20 ${this.state.isPlay ? 'pause':'play'}`} onClick={this.playMusic}></i>
-	                			<i className="icon next ml20"></i>
+	                			<i className="icon next ml20" onClick={this.playNext}></i>
                 			</div>
                 			<div className="-col-auto">
                 				<i className='icon repeat-cycle'></i>
