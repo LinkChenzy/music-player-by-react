@@ -1,6 +1,9 @@
 import React from 'react'
 import Progress from '../components/Progress/progress.js'
 import './player.less'
+import {
+	Link
+} from 'react-router-dom'
 
 let duration = null;
 export default class Player extends React.Component {
@@ -29,27 +32,27 @@ export default class Player extends React.Component {
 		$('#player').unbind($.jPlayer.event.timeupdate);
 	}
 	changeProgressHandle(progress) {
-		$('#player').jPlayer(this.state.isPlay?'play':'pause', duration * progress);
+		$('#player').jPlayer(this.state.isPlay ? 'play' : 'pause', duration * progress);
 	}
 	changeVolumeHandle(progress) {
 		$('#player').jPlayer('volume', progress);
 	}
 
-	playMusic(){
-		if(this.state.isPlay){
+	playMusic() {
+		if (this.state.isPlay) {
 			$('#player').jPlayer('pause');
-		}else{
+		} else {
 			$('#player').jPlayer('play');
 		}
 		this.setState({
-			isPlay:!this.state.isPlay
+			isPlay: !this.state.isPlay
 		})
-		
+
 	}
 	render() {
 		return (
 			<div className="player-page">
-                <h1 className="caption">我的私人音乐坊 &gt;</h1>
+                <h1 className="caption"><Link to="/list">我的私人音乐坊 &gt;</Link></h1>
                 <div className="mt20 row">
                 	<div className="controll-wrapper">
                 		<h2 className="music-title">{this.props.currentMusicItem.title}</h2>

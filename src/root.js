@@ -1,17 +1,35 @@
 import React from 'react'
 import Header from './components/Header/header.js'
 import Player from './page/player.js'
-import {MUSIC_LIST} from './config/musiclist.js'
+import {
+	MUSIC_LIST
+} from './config/musiclist.js'
 import MusicList from './page/musiclist.js'
+import {
+	BrowserRouter as Router,
+	Link,
+	Route,
+	Switch
+} from 'react-router-dom'
 
 
-export default class Root extends React.Component {
+class App extends React.Component {
 
+	render() {
+		return (
+			<div>
+    			<Header />
+    			
+    		</div>
+		)
+	}
+}
+class Root extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			musicList:MUSIC_LIST,
-			currentMusicItem:MUSIC_LIST[0]
+			musicList: MUSIC_LIST,
+			currentMusicItem: MUSIC_LIST[0]
 		};
 	}
 	componentDidMount() {
@@ -24,22 +42,33 @@ export default class Root extends React.Component {
 			supplied: 'mp3',
 			wmode: 'window'
 		});
-		
 
 	}
 	componentWillUnmount() {
-		
+
 	}
-	
+
 	render() {
+		let This = this;
+
+		const MusicLists = () => (
+			<MusicList currentMusicItem={This.state.currentMusicItem} musicList={this.state.musicList}/>
+		);
+
+		const Players = () => (
+			<Player currentMusicItem={This.state.currentMusicItem} repeatType='1' isPlay={This.state.playState} />
+		);
+
 		return (
-			<div>
-    			<Header />
-    			<MusicList currentMusicItem={this.state.currentMusicItem}
-    			musicList={this.state.musicList}
-    			>
-    			</MusicList>
-    		</div>
-		)
+			<Router>
+				<section>
+					<Header />
+					<Route exact path="/" component={Players} />
+					<Route path="/list" component={MusicLists} />
+				</section>
+			</Router>
+		);
 	}
 }
+
+export default Root;
