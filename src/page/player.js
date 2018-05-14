@@ -13,10 +13,19 @@ export default class Player extends React.Component {
 		this.state = {
 			progress: 0,
 			volume: 0,
-			isPlay: true
+			isPlay: true,
+			leftTime:''
 		};
 		this.playMusic = this.playMusic.bind(this);
 		this.changeProgressHandle = this.changeProgressHandle.bind(this);
+	}
+	// 时间格式化
+	formatTime(time){
+		time = Math.floor(time);
+		let minutes = Math.floor(time / 60);
+		let seconds = Math.floor(time % 60);
+		seconds = seconds<10 ? `0${seconds}` : seconds;
+		return `${minutes}:${seconds}`;
 	}
 	componentDidMount() {
 		$('#player').bind($.jPlayer.event.timeupdate, (e) => {
@@ -25,6 +34,7 @@ export default class Player extends React.Component {
 				//progress:Math.round(e.jPlayer.status.currentTime)//jPlayer获取的当前的时间
 				volume: e.jPlayer.options.volume * 100,
 				progress: e.jPlayer.status.currentPercentAbsolute,
+				leftTime: this.formatTime(duration * (1 - e.jPlayer.status.currentPercentAbsolute / 100))
 			});
 
 		});
@@ -56,6 +66,9 @@ export default class Player extends React.Component {
 	playNext() {
 		Pubsub.publish('PLAY_NEXT');
 	}
+	changeRepeat(){
+		Pubsub.publish('CHANGE_CYCLE_MODEL');
+	}
 	render() {
 		return (
 			<div className="player-page">
@@ -65,7 +78,7 @@ export default class Player extends React.Component {
                 		<h2 className="music-title">{this.props.currentMusicItem.title}</h2>
                 		<h3 className="music-artist mt10">{this.props.currentMusicItem.artist}</h3>
                 		<div className="row mt20">
-                			<div className="left-time -col-auto">-2:00</div>
+                			<div className="left-time -col-auto">{this.state.leftTime}</div>
                 			<div className="volume-container">
                 				<i className="icon-volume rt" style={{top: 5, left: -5}}></i>
                 				<div className="volume-wrapper">
@@ -86,7 +99,7 @@ export default class Player extends React.Component {
 	                			<i className="icon next ml20" onClick={this.playNext}></i>
                 			</div>
                 			<div className="-col-auto">
-                				<i className='icon repeat-cycle'></i>
+                				<i className={`icon repeat-${this.props.repeatType}`} onClick={this.changeRepeat}></i>
                 			</div>
                 		</div>
                 	</div>

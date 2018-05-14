@@ -19,7 +19,8 @@ class Root extends React.Component {
 		super(props);
 		this.state = {
 			musicList: MUSIC_LIST,
-			currentMusicItem: MUSIC_LIST[0]
+			currentMusicItem: MUSIC_LIST[0],
+			cycleModel: 'cycle'
 		};
 	}
 	playMusic(musicItem) {
@@ -31,14 +32,25 @@ class Root extends React.Component {
 		});
 	}
 	// 播放下一曲
-	playNext(type = 'next') {
+	playNext(type='next') {
 		let index = this.findMusicIndex(this.state.currentMusicItem);
 		let newIndex = null;
 		let musicListLength = this.state.musicList.length;
-		if (type === 'next') {
-			newIndex = (index + 1) % musicListLength;
-		} else {
-			newIndex = (index - 1 + musicListLength) % musicListLength;
+		switch(type) {
+			case 'cycle':
+				newIndex = (index + 1) % musicListLength;
+				break;
+			case 'once':
+				newIndex = index;
+				break;
+			case 'random':
+				newIndex = Math.round(Math.random() * musicListLength);
+				break;
+			case 'prev':
+				newIndex = (index - 1 + musicListLength) % musicListLength;
+				break;
+			default:
+				newIndex = (index + 1) % musicListLength;
 		}
 		this.playMusic(this.state.musicList[newIndex]);
 	}
@@ -52,9 +64,20 @@ class Root extends React.Component {
 			wmode: 'window'
 		});
 		this.playMusic(this.state.currentMusicItem);
-		$("#player").bind($.jPlayer.event.ended, e => {
-			this.playNext();
+		$('#player').bind($.jPlayer.event.ended, (e) => {
+		      switch(this.state.cycleModel) {
+		        case 'cycle':
+		          this.playNext('cycle');
+		          break;
+		        case 'once':
+		          this.playNext('once');
+		          break;
+		        case 'random':
+		          this.playNext('random');
+		          break;
+		      }
 		});
+
 		// 删除音乐列表
 		Pubsub.subscribe('DELETE_MUSIC', (message, musicItem) => {
 			this.setState({
@@ -71,10 +94,43 @@ class Root extends React.Component {
 		});
 		// 切换下一曲
 		Pubsub.subscribe('PLAY_PREV', (message, musicItem) => {
-			this.playNext('prev');
+			
+			switch(this.state.cycleModel) {
+		        case 'cycle':
+		          this.playNext('prev');
+		          break;
+		        case 'once':
+		          this.playNext('once');
+		          break;
+		        case 'random':
+		          this.playNext('random');
+		          break;
+		        default:
+		          this.playNext('prev');
+		      }
 		});
 		Pubsub.subscribe('PLAY_NEXT', (message, musicItem) => {
-			this.playNext();
+			switch(this.state.cycleModel) {
+		        case 'cycle':
+		          this.playNext('cycle');
+		          break;
+		        case 'once':
+		          this.playNext('once');
+		          break;
+		        case 'random':
+		          this.playNext('random');
+		          break;
+		        default:
+		          this.playNext();
+		      }
+		});
+		Pubsub.subscribe('CHANGE_CYCLE_MODEL', (message) => {
+			const MODEL = ['cycle', 'once', 'random'];
+			let currentModel = MODEL.indexOf(this.state.cycleModel);
+			let newModel = (currentModel + 1) % 3;
+			this.setState({
+				cycleModel: MODEL[newModel]
+			});
 		});
 
 	}
@@ -84,6 +140,7 @@ class Root extends React.Component {
 		Pubsub.unsubscribe('PLAY_PREV');
 		Pubsub.unsubscribe('PLAY_NEXT');
 		$("#player").unbind($.jPlayer.event.ended);
+		Pubsub.unsubscribe('CHANGE_CYCLE_MODEL');
 	}
 
 	render() {
@@ -94,7 +151,7 @@ class Root extends React.Component {
 		);
 
 		const Players = () => (
-			<Player currentMusicItem={This.state.currentMusicItem} repeatType='1' isPlay={This.state.playState} />
+			<Player currentMusicItem={This.state.currentMusicItem} repeatType={This.state.cycleModel} isPlay={This.state.playState} />
 		);
 
 		return (
